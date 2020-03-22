@@ -7,14 +7,6 @@ env:
     S3_BUCKET: "theilliminationgameapi"
     PACKAGE: "github.com/maisiesadler/TheIlliminationGameApi"
 
-Metadata:
-    AWS::ServerlessRepo::Application:
-        Name: the-illimination-game-api
-        Description: The Illimination Game Api
-        Author: Maisie Sadler
-        SourceCodeUrl: https://github.com/maisiesadler/TheIlliminationGameApi
-        ReadmeUrl: README.md
-
 phases:
   install:
     runtime-versions:
