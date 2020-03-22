@@ -7,7 +7,7 @@ env:
     S3_BUCKET: "theilliminationgameapi"
     PACKAGE: "github.com/maisiesadler/TheIlliminationGameApi"
 
-metadata:
+Metadata:
     AWS::ServerlessRepo::Application:
         Name: the-illimination-game-api
         Description: The Illimination Game Api
