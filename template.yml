@@ -32,7 +32,7 @@ Resources:
       Handler: /get
       Runtime: go1.x
       Tracing: Active
-      Role: arn:aws:iam::266057577872:role/dfd-api-lambda-role
+      Role: arn:aws:iam::285266506145:role/api_lambda
       Events:
         GetEvent:
           Type: Api
@@ -40,8 +40,6 @@ Resources:
             RestApiId: !Ref IlliminationApi
             Path: /test
             Method: get
-            Auth:
-              Authorizer: CognitoAuthorizer
       Policies:
         - VPCAccessPolicy: {}
         # This policy gives permission for Lambdas to create/manage ENIs
