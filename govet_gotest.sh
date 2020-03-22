@@ -1,3 +1,3 @@
-go vet ./functions/userview/get
+go vet ./functions/test/get
 
-go test ./functions/userview/get
+go test ./functions/test/get

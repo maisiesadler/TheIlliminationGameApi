@@ -17,10 +17,10 @@ Resources:
         AllowHeaders: "'Content-Type,Authorization'"
         AllowMethods: "'OPTIONS,POST,GET,PUT,DELETE'"
         AllowOrigin: "'*'"
-  userviewget:
+  testget:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: bin/userview/
+      CodeUri: bin/test/
       Handler: /get
       Runtime: go1.x
       Tracing: Active
@@ -30,7 +30,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref IlliminationApi
-            Path: /userview
+            Path: /test
             Method: get
             Auth:
               Authorizer: CognitoAuthorizer

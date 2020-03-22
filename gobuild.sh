@@ -1,3 +1,3 @@
 mkdir bin
 
-go build -o bin/userview/get ./functions/userview/get
+go build -o bin/test/get ./functions/test/get
