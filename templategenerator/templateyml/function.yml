@@ -5,7 +5,7 @@
       Handler: {{Handler}}
       Runtime: go1.x
       Tracing: Active
-      Role: arn:aws:iam::285266506145:role/api_lambda
+      Role: !Ref LambdaRoleId
       Events:
         GetEvent:
           Type: Api

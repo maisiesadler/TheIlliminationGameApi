@@ -5,8 +5,11 @@ Parameters:
     Type: List<AWS::EC2::SecurityGroup::Id>
     Description: Security Group IDs that Lambda will use
   VpcSubnetIds: 
-    Type: List<AWS::EC2::Subnet::Id>
-    Description: VPC Subnet IDs that Lambda will use (min 2 for HA)
+      Type: List<AWS::EC2::Subnet::Id>
+      Description: VPC Subnet IDs that Lambda will use (min 2 for HA)
+  LambdaRoleId: 
+    Type: AWS::IAM::Role::Id
+    Description: Role for serverless function to use
 
 Metadata:
   AWS::ServerlessRepo::Application:
@@ -32,7 +35,7 @@ Resources:
       Handler: /get
       Runtime: go1.x
       Tracing: Active
-      Role: arn:aws:iam::285266506145:role/api_lambda
+      Role: !Ref LambdaRoleId
       Events:
         GetEvent:
           Type: Api
