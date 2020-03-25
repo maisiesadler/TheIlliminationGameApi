@@ -8,7 +8,7 @@ Parameters:
       Type: List<AWS::EC2::Subnet::Id>
       Description: VPC Subnet IDs that Lambda will use (min 2 for HA)
   LambdaRoleArn:
-    Type: AWS::IAM::Role::Arn
+    Type: String
     Description: Role for serverless function to use
 
 Metadata:
