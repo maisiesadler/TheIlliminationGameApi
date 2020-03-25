@@ -5,7 +5,7 @@
       Handler: {{Handler}}
       Runtime: go1.x
       Tracing: Active
-      Role: !Ref LambdaRoleId
+      Role: !Ref LambdaRoleArn
       Events:
         GetEvent:
           Type: Api

@@ -7,8 +7,8 @@ Parameters:
   VpcSubnetIds: 
       Type: List<AWS::EC2::Subnet::Id>
       Description: VPC Subnet IDs that Lambda will use (min 2 for HA)
-  LambdaRoleId: 
-    Type: AWS::IAM::Role::Id
+  LambdaRoleArn:
+    Type: AWS::IAM::Role::Arn
     Description: Role for serverless function to use
 
 Metadata:
@@ -35,7 +35,7 @@ Resources:
       Handler: /get
       Runtime: go1.x
       Tracing: Active
-      Role: !Ref LambdaRoleId
+      Role: !Ref LambdaRoleArn
       Events:
         GetEvent:
           Type: Api
