@@ -24,6 +24,14 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 func logAttributes(request *events.APIGatewayProxyRequest) {
 
+	log.Printf("logging attributes %s\n", request.Path)
+
+	fmt.Printf("AccountID='%v'\n", request.RequestContext.AccountID)
+	fmt.Printf("HTTPMethod='%v'\n", request.RequestContext.HTTPMethod)
+	fmt.Printf("ResourceID='%v'\n", request.RequestContext.ResourceID)
+	fmt.Printf("OperationName='%v'\n", request.RequestContext.OperationName)
+	fmt.Printf("Stage='%v'\n", request.RequestContext.Stage)
+
 	for k, v := range request.RequestContext.Authorizer {
 		fmt.Printf("Got k='%v', v='%v'\n", k, v)
 	}
