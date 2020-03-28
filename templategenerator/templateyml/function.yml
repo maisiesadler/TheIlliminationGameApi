@@ -13,6 +13,8 @@
             RestApiId: !Ref IlliminationApi
             Path: {{Path}}
             Method: {{Method}}
+            Auth:
+              Authorizer: CognitoAuthorizer
       Policies:
         - VPCAccessPolicy: {}
         # This policy gives permission for Lambdas to create/manage ENIs

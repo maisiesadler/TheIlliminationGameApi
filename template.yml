@@ -9,7 +9,10 @@ Parameters:
       Description: VPC Subnet IDs that Lambda will use (min 2 for HA)
   LambdaRoleArn:
     Type: String
-    Description: Role for serverless function to use
+    Description: Role arn for serverless function to use
+  CognitoAuthorizerArn:
+    Type: String
+    Description: User pool arn to be used for auth
 
 Metadata:
   AWS::ServerlessRepo::Application:
@@ -28,6 +31,10 @@ Resources:
         AllowHeaders: "'Content-Type,Authorization'"
         AllowMethods: "'OPTIONS,POST,GET,PUT,DELETE'"
         AllowOrigin: "'*'"
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !Ref CognitoAuthorizerArn
   testget:
     Type: AWS::Serverless::Function
     Properties:
@@ -43,6 +50,8 @@ Resources:
             RestApiId: !Ref IlliminationApi
             Path: /test
             Method: get
+            Auth:
+              Authorizer: CognitoAuthorizer
       Policies:
         - VPCAccessPolicy: {}
         # This policy gives permission for Lambdas to create/manage ENIs

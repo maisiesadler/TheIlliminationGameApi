@@ -8,8 +8,11 @@ Parameters:
       Type: List<AWS::EC2::Subnet::Id>
       Description: VPC Subnet IDs that Lambda will use (min 2 for HA)
   LambdaRoleArn:
-    Type: AWS::IAM::Role::Arn
-    Description: Role for serverless function to use
+    Type: String
+    Description: Role arn for serverless function to use
+  CognitoAuthorizerArn:
+    Type: String
+    Description: User pool arn to be used for auth
 
 Metadata:
   AWS::ServerlessRepo::Application:
@@ -28,3 +31,7 @@ Resources:
         AllowHeaders: "'Content-Type,Authorization'"
         AllowMethods: "'OPTIONS,POST,GET,PUT,DELETE'"
         AllowOrigin: "'*'"
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !Ref CognitoAuthorizerArn
