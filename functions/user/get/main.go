@@ -28,7 +28,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	user, err := apigateway.GetOrCreateAuthenticatedUser(context.TODO(), &request)
 	if err != nil {
-		return events.APIGatewayProxyResponse{StatusCode: 401}, errAuth
+		return apigateway.ResponseUnsuccessful(401), errAuth
 	}
 
 	response := &User{
