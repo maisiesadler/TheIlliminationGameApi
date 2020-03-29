@@ -17,6 +17,7 @@ func TestHandler(t *testing.T) {
 	response, err := Handler(*apirequest)
 
 	// Assert
-	assert.Nil(t, err)
-	assert.Equal(t, "Hello, world", response.Body)
+	assert.NotNil(t, err)
+	assert.Equal(t, 400, response.StatusCode)
+	assert.Equal(t, "", response.Body)
 }

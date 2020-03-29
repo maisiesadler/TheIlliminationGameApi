@@ -37,7 +37,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	err := json.Unmarshal([]byte(request.Body), r)
 	if err != nil {
 		fmt.Printf("Could not parse body: %v.\n", request.Body)
-		return apigateway.ResponseUnsuccessful(500), err
+		return apigateway.ResponseUnsuccessful(400), err
 	}
 
 	user, err := apigateway.GetOrCreateAuthenticatedUser(context.TODO(), &request)
