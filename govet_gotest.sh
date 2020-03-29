@@ -1,3 +1,5 @@
-go vet ./functions/test/get
+go vet ./functions/user/get
+go vet ./functions/user/post
 
-go test ./functions/test/get
+go test ./functions/user/get
+go test ./functions/user/post
