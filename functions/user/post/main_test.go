@@ -18,5 +18,5 @@ func TestHandler(t *testing.T) {
 
 	// Assert
 	assert.Nil(t, err)
-	assert.Equal(t, "Hello, world", response.Body)
+	assert.Equal(t, "Hello, world!", response.Body)
 }
