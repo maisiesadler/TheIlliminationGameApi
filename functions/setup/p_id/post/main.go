@@ -72,6 +72,8 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		game.JoinGame(user)
 	} else if r.UpdateType == "option" {
 		game.AddOption(user, r.Option)
+	} else if r.UpdateType == "start" {
+		game.Start()
 	}
 
 	game, _ = theilliminationgame.LoadGameSetUp(&objID)
