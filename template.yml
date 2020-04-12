@@ -35,6 +35,54 @@ Resources:
         Authorizers:
           CognitoAuthorizer:
             UserPoolArn: !Ref CognitoAuthorizerArn
+  gamepidget:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: bin/game/p_id/
+      Handler: /get
+      Runtime: go1.x
+      Tracing: Active
+      Role: !Ref LambdaRoleArn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref IlliminationApi
+            Path: /game/{id}
+            Method: get
+            Auth:
+              Authorizer: CognitoAuthorizer
+      Policies:
+        - VPCAccessPolicy: {}
+        # This policy gives permission for Lambdas to create/manage ENIs
+        # SAM Policy templates you can use: https://github.com/awslabs/serverless-application-model/blob/develop/examples/2016-10-31/policy_templates/all_policy_templates.yaml
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref VpcSubnetIds
+  gamepidpost:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: bin/game/p_id/
+      Handler: /post
+      Runtime: go1.x
+      Tracing: Active
+      Role: !Ref LambdaRoleArn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref IlliminationApi
+            Path: /game/{id}
+            Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
+      Policies:
+        - VPCAccessPolicy: {}
+        # This policy gives permission for Lambdas to create/manage ENIs
+        # SAM Policy templates you can use: https://github.com/awslabs/serverless-application-model/blob/develop/examples/2016-10-31/policy_templates/all_policy_templates.yaml
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref VpcSubnetIds
   setupavailableget:
     Type: AWS::Serverless::Function
     Properties:

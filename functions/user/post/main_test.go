@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/maisiesadler/theilliminationgame/illiminationtesting"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -11,6 +12,9 @@ import (
 func TestHandler(t *testing.T) {
 
 	// Arrange
+
+	illiminationtesting.SetTestCollectionOverride()
+
 	apirequest := &events.APIGatewayProxyRequest{}
 
 	// Act
