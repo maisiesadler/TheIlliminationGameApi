@@ -1,5 +1,6 @@
 mkdir bin
 
+go build -o bin/setup/available/get ./functions/setup/available/get
 go build -o bin/setup/get ./functions/setup/get
 go build -o bin/setup/p_id/get ./functions/setup/p_id/get
 go build -o bin/setup/p_id/post ./functions/setup/p_id/post
