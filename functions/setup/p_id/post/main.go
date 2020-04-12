@@ -28,9 +28,14 @@ type SetUpRequest struct {
 	Option     string `json:"option"`
 }
 
-// GamesResponse is the response from this handler
-type GamesResponse struct {
+// GameUpdateResponse is the response from this handler
+type GameUpdateResponse struct {
 	Game *theilliminationgame.GameSetUpSummary `json:"game"`
+}
+
+// StartGameResponse is the response from this handler
+type StartGameResponse struct {
+	Game *theilliminationgame.GameSummary `json:"game"`
 }
 
 // Handler is your Lambda function handler
@@ -62,26 +67,35 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return apigateway.ResponseUnsuccessful(400), errInvalidParameter
 	}
 
-	game, err := theilliminationgame.LoadGameSetUp(&objID)
+	setup, err := theilliminationgame.LoadGameSetUp(&objID)
 	if err != nil {
 		fmt.Printf("Error finding games: '%v'.\n", err)
 		return apigateway.ResponseUnsuccessful(500), err
 	}
 
 	if r.UpdateType == "join" {
-		game.JoinGame(user)
+		setup.JoinGame(user)
 	} else if r.UpdateType == "option" {
-		game.AddOption(user, r.Option)
+		setup.AddOption(user, r.Option)
 	} else if r.UpdateType == "start" {
-		game.Start(user)
+		game, err := setup.Start(user)
+		if err != nil {
+			fmt.Printf("error starting game: %v", err)
+			return apigateway.ResponseUnsuccessful(500), err
+		}
+		response := &StartGameResponse{
+			Game: game.Summary(user),
+		}
+		resp := apigateway.ResponseSuccessful(response)
+		return resp, nil
 	} else if r.UpdateType == "deactivate" {
-		game.Deactivate(user)
+		setup.Deactivate(user)
 	}
 
-	game, _ = theilliminationgame.LoadGameSetUp(&objID)
+	setup, _ = theilliminationgame.LoadGameSetUp(&objID)
 
-	response := &GamesResponse{
-		Game: game.Summary(user),
+	response := &GameUpdateResponse{
+		Game: setup.Summary(user),
 	}
 
 	resp := apigateway.ResponseSuccessful(response)
