@@ -53,6 +53,8 @@ func TestHandler(t *testing.T) {
 	err = json.Unmarshal([]byte(response.Body), &gameResponse)
 	assert.Nil(t, err)
 
+	assert.Equal(t, "Illiminated", gameResponse.Result)
+
 	assert.Equal(t, id, gameResponse.Game.ID)
 	assert.Equal(t, 1, len(gameResponse.Game.Remaining))
 	assert.Equal(t, "test2", gameResponse.Game.Remaining[0])

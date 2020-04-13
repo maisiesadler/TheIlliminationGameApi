@@ -30,7 +30,8 @@ type SetUpRequest struct {
 
 // GameResponse is the response from this handler
 type GameResponse struct {
-	Game *theilliminationgame.GameSummary `json:"game"`
+	Game   *theilliminationgame.GameSummary `json:"game"`
+	Result string                           `json:"string"`
 }
 
 // Handler is your Lambda function handler
@@ -68,14 +69,17 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return apigateway.ResponseUnsuccessful(500), err
 	}
 
+	var result string
+
 	if r.UpdateType == "illiminate" {
-		game.Illiminate(user, r.Option)
+		result = string(game.Illiminate(user, r.Option))
 	}
 
 	game, _ = theilliminationgame.LoadGame(&objID)
 
 	response := &GameResponse{
-		Game: game.Summary(user),
+		Game:   game.Summary(user),
+		Result: result,
 	}
 
 	resp := apigateway.ResponseSuccessful(response)
