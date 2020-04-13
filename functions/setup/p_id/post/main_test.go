@@ -48,6 +48,8 @@ func TestHandler(t *testing.T) {
 	err = json.Unmarshal([]byte(response.Body), &gamesResponse)
 	assert.Nil(t, err)
 
+	assert.Equal(t, string(theilliminationgame.AORSuccess), gamesResponse.Result)
+
 	assert.Equal(t, id, gamesResponse.Game.ID)
 	assert.Equal(t, 1, len(gamesResponse.Game.Options))
 	assert.Equal(t, "test", gamesResponse.Game.Options[0])

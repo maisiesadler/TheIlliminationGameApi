@@ -30,7 +30,8 @@ type SetUpRequest struct {
 
 // GameUpdateResponse is the response from this handler
 type GameUpdateResponse struct {
-	Game *theilliminationgame.GameSetUpSummary `json:"game"`
+	Game   *theilliminationgame.GameSetUpSummary `json:"game"`
+	Result string                                `json:"result"`
 }
 
 // Handler is your Lambda function handler
@@ -68,10 +69,12 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return apigateway.ResponseUnsuccessful(500), err
 	}
 
+	var result string
+
 	if r.UpdateType == "join" {
 		setup.JoinGame(user)
 	} else if r.UpdateType == "option" {
-		setup.AddOption(user, r.Option)
+		result = string(setup.AddOption(user, r.Option))
 	} else if r.UpdateType == "deactivate" {
 		setup.Deactivate(user)
 	}
@@ -79,7 +82,8 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	setup, _ = theilliminationgame.LoadGameSetUp(&objID)
 
 	response := &GameUpdateResponse{
-		Game: setup.Summary(user),
+		Result: result,
+		Game:   setup.Summary(user),
 	}
 
 	resp := apigateway.ResponseSuccessful(response)
