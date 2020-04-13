@@ -7,9 +7,8 @@ import (
 	"fmt"
 	"log"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
-
 	"github.com/maisiesadler/theilliminationgame"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -19,19 +18,17 @@ import (
 
 var errAuth = errors.New("Not logged in")
 var errParse = errors.New("Error parsing request")
-var errMissingParameter = errors.New("Missing parameter")
 var errInvalidParameter = errors.New("Invalid parameter")
 
-// SetUpRequest is the request for this handler
-type SetUpRequest struct {
-	UpdateType string `json:"updateType"`
-	Option     string `json:"option"`
+// StartGameRequest is the request from this handler
+type StartGameRequest struct {
+	SetUpID string `json:"setupId"`
 }
 
-// GameResponse is the response from this handler
-type GameResponse struct {
-	Game   *theilliminationgame.GameSummary `json:"game"`
+// StartGameResponse is the response from this handler
+type StartGameResponse struct {
 	Result string                           `json:"result"`
+	Game   *theilliminationgame.GameSummary `json:"game"`
 }
 
 // Handler is your Lambda function handler
@@ -46,40 +43,33 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return apigateway.ResponseUnsuccessful(401), errAuth
 	}
 
-	r := &SetUpRequest{}
+	r := &StartGameRequest{}
 	err = json.Unmarshal([]byte(request.Body), r)
 	if err != nil {
 		fmt.Printf("Could not parse body: %v.\n", request.Body)
 		return events.APIGatewayProxyResponse{StatusCode: 500}, errParse
 	}
 
-	id, ok := request.PathParameters["id"]
-	if !ok || id == "" {
-		return apigateway.ResponseUnsuccessful(400), errMissingParameter
-	}
-
-	objID, err := primitive.ObjectIDFromHex(id)
+	objID, err := primitive.ObjectIDFromHex(r.SetUpID)
 	if err != nil {
 		return apigateway.ResponseUnsuccessful(400), errInvalidParameter
 	}
 
-	game, err := theilliminationgame.LoadGame(&objID)
+	setup, err := theilliminationgame.LoadGameSetUp(&objID)
 	if err != nil {
-		fmt.Printf("Error finding games: '%v'.\n", err)
+		fmt.Printf("error loading game setup: %v", err)
 		return apigateway.ResponseUnsuccessful(500), err
 	}
 
-	var result string
-
-	if r.UpdateType == "illiminate" {
-		result = string(game.Illiminate(user, r.Option))
+	game, startResult := setup.Start(user)
+	var summary *theilliminationgame.GameSummary
+	if startResult == theilliminationgame.Success {
+		summary = game.Summary(user)
 	}
 
-	game, _ = theilliminationgame.LoadGame(&objID)
-
-	response := &GameResponse{
-		Game:   game.Summary(user),
-		Result: result,
+	response := &StartGameResponse{
+		Result: string(startResult),
+		Game:   summary,
 	}
 
 	resp := apigateway.ResponseSuccessful(response)

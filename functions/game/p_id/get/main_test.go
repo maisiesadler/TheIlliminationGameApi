@@ -18,8 +18,10 @@ func TestHandler(t *testing.T) {
 	user := illiminationtesting.TestUser(t, "User")
 	setup := theilliminationgame.Create(user)
 	setup.AddOption(user, "test")
-	game, err := setup.Start(user)
-	assert.Nil(t, err)
+
+	game, startResult := setup.Start(user)
+	assert.Equal(t, theilliminationgame.Success, startResult)
+
 	id := game.Summary(user).ID
 
 	apirequest := illiminationtesting.CreateTestAuthorizedRequest("User")

@@ -25,8 +25,9 @@ func TestHandler(t *testing.T) {
 	setup := theilliminationgame.Create(user)
 	setup.AddOption(user, "test")
 	setup.AddOption(user, "test2")
-	game, err := setup.Start(user)
-	assert.Nil(t, err)
+
+	game, startResult := setup.Start(user)
+	assert.Equal(t, theilliminationgame.Success, startResult)
 
 	id := game.Summary(user).ID
 

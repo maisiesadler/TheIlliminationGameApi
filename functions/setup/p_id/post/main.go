@@ -33,11 +33,6 @@ type GameUpdateResponse struct {
 	Game *theilliminationgame.GameSetUpSummary `json:"game"`
 }
 
-// StartGameResponse is the response from this handler
-type StartGameResponse struct {
-	Game *theilliminationgame.GameSummary `json:"game"`
-}
-
 // Handler is your Lambda function handler
 // It uses Amazon API Gateway request/responses provided by the aws-lambda-go/events package,
 // However you could use other event sources (S3, Kinesis etc), or JSON-decoded primitive types such as 'string'.
@@ -77,17 +72,6 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		setup.JoinGame(user)
 	} else if r.UpdateType == "option" {
 		setup.AddOption(user, r.Option)
-	} else if r.UpdateType == "start" {
-		game, err := setup.Start(user)
-		if err != nil {
-			fmt.Printf("error starting game: %v", err)
-			return apigateway.ResponseUnsuccessful(500), err
-		}
-		response := &StartGameResponse{
-			Game: game.Summary(user),
-		}
-		resp := apigateway.ResponseSuccessful(response)
-		return resp, nil
 	} else if r.UpdateType == "deactivate" {
 		setup.Deactivate(user)
 	}

@@ -44,7 +44,7 @@ func TestHandler(t *testing.T) {
 	// Assert
 	assert.Nil(t, err)
 	assert.Equal(t, 200, response.StatusCode)
-	var gamesResponse GamesResponse
+	var gamesResponse GameUpdateResponse
 	err = json.Unmarshal([]byte(response.Body), &gamesResponse)
 	assert.Nil(t, err)
 
