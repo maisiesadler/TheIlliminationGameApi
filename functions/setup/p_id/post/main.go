@@ -24,8 +24,10 @@ var errInvalidParameter = errors.New("Invalid parameter")
 
 // SetUpRequest is the request for this handler
 type SetUpRequest struct {
-	UpdateType string `json:"updateType"`
-	Option     string `json:"option"`
+	UpdateType  string            `json:"updateType"`
+	Option      string            `json:"option"`
+	OptionIndex int               `json:"optionIdx"`
+	Updates     map[string]string `json:"updates"`
 }
 
 // GameUpdateResponse is the response from this handler
@@ -73,8 +75,13 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	if r.UpdateType == "join" {
 		setup.JoinGame(user)
-	} else if r.UpdateType == "option" {
+	} else if r.UpdateType == "option_add" {
 		result = string(setup.AddOption(user, r.Option))
+	} else if r.UpdateType == "option_update" {
+		if r.Updates == nil {
+			return apigateway.ResponseUnsuccessfulString(400, "No Updates"), err
+		}
+		setup.UpdateOption(user, r.OptionIndex, r.Updates)
 	} else if r.UpdateType == "deactivate" {
 		setup.Deactivate(user)
 	}

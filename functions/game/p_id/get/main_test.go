@@ -18,6 +18,7 @@ func TestHandler(t *testing.T) {
 	user := illiminationtesting.TestUser(t, "User")
 	setup := theilliminationgame.Create(user)
 	setup.AddOption(user, "test")
+	setup.AddOption(user, "test1")
 
 	game, startResult := setup.Start(user)
 	assert.Equal(t, theilliminationgame.Success, startResult)

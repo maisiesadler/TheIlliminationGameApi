@@ -52,5 +52,5 @@ func TestHandler(t *testing.T) {
 
 	assert.Equal(t, id, gamesResponse.Game.ID)
 	assert.Equal(t, 1, len(gamesResponse.Game.Options))
-	assert.Equal(t, "test", gamesResponse.Game.Options[0])
+	assert.Equal(t, "test", gamesResponse.Game.Options[0].Name)
 }
