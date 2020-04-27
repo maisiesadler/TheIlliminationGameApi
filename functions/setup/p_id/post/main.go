@@ -84,6 +84,8 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		setup.UpdateOption(user, r.OptionIndex, r.Updates)
 	} else if r.UpdateType == "deactivate" {
 		setup.Deactivate(user)
+	} else {
+		result = "Unknown update type"
 	}
 
 	setup, _ = theilliminationgame.LoadGameSetUp(&objID)
