@@ -30,7 +30,7 @@ func TestHandler(t *testing.T) {
 	apirequest.PathParameters["id"] = id.Hex()
 
 	setupRequest := &SetUpRequest{
-		UpdateType: "option",
+		UpdateType: "option_add",
 		Option:     "test",
 	}
 
