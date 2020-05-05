@@ -1,5 +1,6 @@
 mkdir bin
 
+go build -o bin/game/finished/get ./functions/game/finished/get
 go build -o bin/game/get ./functions/game/get
 go build -o bin/game/p_id/get ./functions/game/p_id/get
 go build -o bin/game/p_id/post ./functions/game/p_id/post
