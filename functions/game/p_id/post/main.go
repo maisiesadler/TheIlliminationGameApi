@@ -75,6 +75,8 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		result = string(game.Illiminate(user, r.Option))
 	} else if r.UpdateType == "cancel" {
 		game.Cancel(user)
+	} else if r.UpdateType == "archive" {
+		game.Archive(user)
 	}
 
 	game, _ = theilliminationgame.LoadGame(&objID)
