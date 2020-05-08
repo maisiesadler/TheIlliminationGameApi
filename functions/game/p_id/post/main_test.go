@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
-
 	"github.com/maisiesadler/theilliminationgame"
 
 	"github.com/maisiesadler/theilliminationgame/illiminationtesting"
@@ -17,9 +15,6 @@ func TestHandler(t *testing.T) {
 
 	// Arrange
 	illiminationtesting.SetTestCollectionOverride()
-	illiminationtesting.SetUserViewFindPredicate(func(uv *models.UserView, m primitive.M) bool {
-		return m["username"] == uv.Username
-	})
 
 	user := illiminationtesting.TestUser(t, "User")
 	setup := theilliminationgame.Create(user)
@@ -69,9 +64,6 @@ func TestCancelRunningGame(t *testing.T) {
 
 	// Arrange
 	illiminationtesting.SetTestCollectionOverride()
-	illiminationtesting.SetUserViewFindPredicate(func(uv *models.UserView, m primitive.M) bool {
-		return m["username"] == uv.Username
-	})
 
 	user := illiminationtesting.TestUser(t, "User")
 	setup := theilliminationgame.Create(user)
@@ -109,4 +101,51 @@ func TestCancelRunningGame(t *testing.T) {
 	assert.Equal(t, 2, len(gameResponse.Game.Remaining))
 
 	assert.Equal(t, string(models.StateCancelled), gameResponse.Game.Status)
+}
+
+func TestReviewCompletedGame(t *testing.T) {
+
+	// Arrange
+	illiminationtesting.SetTestCollectionOverride()
+
+	user := illiminationtesting.TestUser(t, "User")
+	setup := theilliminationgame.Create(user)
+	setup.AddOption(user, "test")
+	setup.AddOption(user, "test2")
+
+	game, startResult := setup.Start(user)
+	assert.Equal(t, theilliminationgame.Success, startResult)
+	game.Illiminate(user, "test")
+
+	summary := game.Summary(user)
+	assert.NotNil(t, summary.Winner)
+
+	apirequest := illiminationtesting.CreateTestAuthorizedRequest("Test_User")
+	apirequest.PathParameters = make(map[string]string)
+	apirequest.PathParameters["id"] = summary.ID.Hex()
+
+	setupRequest := &SetUpRequest{
+		UpdateType:     "review",
+		ReviewThoughts: "rubbish",
+	}
+
+	b, err := json.Marshal(setupRequest)
+	assert.Nil(t, err)
+	apirequest.Body = string(b)
+
+	// Act
+	response, err := Handler(*apirequest)
+
+	// Assert
+	assert.Nil(t, err)
+	assert.Equal(t, 200, response.StatusCode)
+	var gameResponse GameResponse
+	err = json.Unmarshal([]byte(response.Body), &gameResponse)
+	assert.Nil(t, err)
+
+	assert.Equal(t, summary.ID, gameResponse.Game.ID)
+
+	assert.Equal(t, string(models.StateFinished), gameResponse.Game.Status)
+	assert.NotNil(t, gameResponse.Game.CompletedGame.PlayerReviews)
+	assert.Equal(t, "rubbish", gameResponse.Game.CompletedGame.PlayerReviews[user.ViewID.Hex()].Thoughts)
 }
