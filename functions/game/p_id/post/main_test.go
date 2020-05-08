@@ -147,5 +147,5 @@ func TestReviewCompletedGame(t *testing.T) {
 
 	assert.Equal(t, string(models.StateFinished), gameResponse.Game.Status)
 	assert.NotNil(t, gameResponse.Game.CompletedGame.PlayerReviews)
-	assert.Equal(t, "rubbish", gameResponse.Game.CompletedGame.PlayerReviews[user.ViewID.Hex()].Thoughts)
+	assert.Equal(t, "rubbish", gameResponse.Game.CompletedGame.PlayerReviews[0].Thoughts)
 }
