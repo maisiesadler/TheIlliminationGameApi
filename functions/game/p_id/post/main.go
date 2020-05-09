@@ -24,9 +24,10 @@ var errInvalidParameter = errors.New("Invalid parameter")
 
 // SetUpRequest is the request for this handler
 type SetUpRequest struct {
-	UpdateType     string `json:"updateType"`
-	Option         string `json:"option"`
-	ReviewThoughts string `json:"reviewThoughts"`
+	UpdateType     string  `json:"updateType"`
+	Option         string  `json:"option"`
+	ReviewThoughts *string `json:"reviewThoughts"`
+	HasImage       *bool   `json:"hasImage"`
 }
 
 // GameResponse is the response from this handler
@@ -77,7 +78,12 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	} else if r.UpdateType == "cancel" {
 		game.Cancel(user)
 	} else if r.UpdateType == "review" {
-		game.Review(user, r.ReviewThoughts)
+		if r.ReviewThoughts != nil {
+			game.Review(user, *r.ReviewThoughts)
+		}
+		if r.HasImage != nil {
+			game.UpdateHasImage(user, *r.HasImage)
+		}
 	} else if r.UpdateType == "archive" {
 		game.Archive(user)
 	}
