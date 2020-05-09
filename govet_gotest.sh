@@ -3,6 +3,7 @@ go vet ./functions/game/get
 go vet ./functions/game/p_id/get
 go vet ./functions/game/p_id/post
 go vet ./functions/game/put
+go vet ./functions/image/get
 go vet ./functions/setup/available/get
 go vet ./functions/setup/get
 go vet ./functions/setup/p_id/get
@@ -16,6 +17,7 @@ go test ./functions/game/get
 go test ./functions/game/p_id/get
 go test ./functions/game/p_id/post
 go test ./functions/game/put
+go test ./functions/image/get
 go test ./functions/setup/available/get
 go test ./functions/setup/get
 go test ./functions/setup/p_id/get

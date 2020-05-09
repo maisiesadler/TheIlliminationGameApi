@@ -155,6 +155,30 @@ Resources:
       VpcConfig:
         SecurityGroupIds: !Ref SecurityGroupIds
         SubnetIds: !Ref VpcSubnetIds
+  imageget:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: bin/image/
+      Handler: /get
+      Runtime: go1.x
+      Tracing: Active
+      Role: !Ref LambdaRoleArn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref IlliminationApi
+            Path: /image
+            Method: get
+            Auth:
+              Authorizer: CognitoAuthorizer
+      Policies:
+        - VPCAccessPolicy: {}
+        # This policy gives permission for Lambdas to create/manage ENIs
+        # SAM Policy templates you can use: https://github.com/awslabs/serverless-application-model/blob/develop/examples/2016-10-31/policy_templates/all_policy_templates.yaml
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref VpcSubnetIds
   setupavailableget:
     Type: AWS::Serverless::Function
     Properties:
