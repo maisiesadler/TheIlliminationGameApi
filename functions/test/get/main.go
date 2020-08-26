@@ -13,10 +13,21 @@ import (
 // It uses Amazon API Gateway request/responses provided by the aws-lambda-go/events package,
 // However you could use other event sources (S3, Kinesis etc), or JSON-decoded primitive types such as 'string'.
 func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
+	
 	log.Printf("Processing Lambda request %s\n", request.RequestContext.RequestID)
 
-	resp := apigateway.ResponseSuccessful("hello")
+	user, err := apigateway.GetOrCreateAuthenticatedUser(context.TODO(), &request)
+	if err != nil {
+		return apigateway.ResponseUnsuccessful(401), errAuth
+	}
+
+	log.Printf("Got user %s\n", request.RequestContext.RequestID)
+
+	response := &User{
+		Nickname: user.Nickname,
+	}
+
+	resp := apigateway.ResponseSuccessful(response)
 	return resp, nil
 }
 
