@@ -28,6 +28,7 @@ type SetUpRequest struct {
 	Option      string            `json:"option"`
 	OptionIndex int               `json:"optionIdx"`
 	Updates     map[string]string `json:"updates"`
+	Tag         *string           `json:"tag"`
 }
 
 // GameUpdateResponse is the response from this handler
@@ -84,6 +85,10 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		setup.UpdateOption(user, r.OptionIndex, r.Updates)
 	} else if r.UpdateType == "deactivate" {
 		setup.Deactivate(user)
+	} else if r.UpdateType == "addtag" {
+		setup.AddTag(user, *r.Tag)
+	} else if r.UpdateType == "removetag" {
+		setup.RemoveTag(user, *r.Tag)
 	} else {
 		result = "Unknown update type"
 	}

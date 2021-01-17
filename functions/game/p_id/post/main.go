@@ -28,6 +28,7 @@ type SetUpRequest struct {
 	Option         string  `json:"option"`
 	ReviewThoughts *string `json:"reviewThoughts"`
 	HasImage       *bool   `json:"hasImage"`
+	Tag            *string `json:"tag"`
 }
 
 // GameResponse is the response from this handler
@@ -86,6 +87,10 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}
 	} else if r.UpdateType == "archive" {
 		game.Archive(user)
+	} else if r.UpdateType == "addtag" {
+		game.AddTag(user, *r.Tag)
+	} else if r.UpdateType == "removetag" {
+		game.RemoveTag(user, *r.Tag)
 	}
 
 	game, _ = theilliminationgame.LoadGame(&objID)
