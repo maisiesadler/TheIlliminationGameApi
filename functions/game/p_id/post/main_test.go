@@ -146,7 +146,6 @@ func TestReviewCompletedGame(t *testing.T) {
 	assert.Equal(t, string(models.StateFinished), gameResponse.Game.Status)
 	assert.NotNil(t, gameResponse.Game.CompletedGame.PlayerReviews)
 	assert.Equal(t, "rubbish", gameResponse.Game.CompletedGame.PlayerReviews[0].Thoughts)
-	assert.Equal(t, false, gameResponse.Game.CompletedGame.PlayerReviews[0].Image)
 }
 
 func TestSequentialReviewUpdatesDontOverwrite(t *testing.T) {
@@ -201,5 +200,4 @@ func TestSequentialReviewUpdatesDontOverwrite(t *testing.T) {
 	assert.Equal(t, string(models.StateFinished), gameResponse.Game.Status)
 	assert.NotNil(t, gameResponse.Game.CompletedGame.PlayerReviews)
 	assert.Equal(t, "rubbish", gameResponse.Game.CompletedGame.PlayerReviews[0].Thoughts)
-	assert.Equal(t, true, gameResponse.Game.CompletedGame.PlayerReviews[0].Image)
 }
