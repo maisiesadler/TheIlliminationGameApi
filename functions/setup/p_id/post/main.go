@@ -26,6 +26,8 @@ var errInvalidParameter = errors.New("Invalid parameter")
 type SetUpRequest struct {
 	UpdateType  string            `json:"updateType"`
 	Option      string            `json:"option"`
+	Description string            `json:"description"`
+	Link        string            `json:"link"`
 	OptionIndex int               `json:"optionIdx"`
 	Updates     map[string]string `json:"updates"`
 	Tag         *string           `json:"tag"`
@@ -78,6 +80,8 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		setup.JoinGame(user)
 	} else if r.UpdateType == "option_add" {
 		result = string(setup.AddOption(user, r.Option))
+	} else if r.UpdateType == "detailedoption_add" {
+		result = string(setup.AddDetailedOption(user, r.Option, r.Description, r.Link))
 	} else if r.UpdateType == "option_update" {
 		if r.Updates == nil {
 			return apigateway.ResponseUnsuccessfulString(400, "No Updates"), err
