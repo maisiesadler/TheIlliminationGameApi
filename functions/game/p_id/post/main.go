@@ -87,10 +87,6 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}
 	} else if r.UpdateType == "archive" {
 		game.Archive(user)
-	} else if r.UpdateType == "addtag" {
-		game.AddTag(user, *r.Tag)
-	} else if r.UpdateType == "removetag" {
-		game.RemoveTag(user, *r.Tag)
 	}
 
 	game, _ = theilliminationgame.LoadGame(&objID)
