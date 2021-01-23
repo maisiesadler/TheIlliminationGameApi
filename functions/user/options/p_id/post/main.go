@@ -68,7 +68,13 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return apigateway.ResponseUnsuccessful(500), err
 	}
 
-	resp := apigateway.ResponseSuccessfulString("ok")
+	userOption, err = theilliminationgame.LoadUserOption(&objID)
+	if err != nil {
+		fmt.Printf("Error reloading user option: '%v'.\n", err)
+		return apigateway.ResponseUnsuccessful(500), err
+	}
+
+	resp := apigateway.ResponseSuccessful(userOption)
 	return resp, nil
 }
 
