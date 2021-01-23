@@ -74,7 +74,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return apigateway.ResponseUnsuccessful(500), err
 	}
 
-	resp := apigateway.ResponseSuccessful(userOption)
+	resp := apigateway.ResponseSuccessful(userOption.Summary(user))
 	return resp, nil
 }
 
