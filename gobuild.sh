@@ -13,4 +13,6 @@ go build -o bin/setup/p_id/post ./functions/setup/p_id/post
 go build -o bin/setup/put ./functions/setup/put
 go build -o bin/user/get ./functions/user/get
 go build -o bin/user/options/get ./functions/user/options/get
+go build -o bin/user/options/p_id/delete ./functions/user/options/p_id/delete
+go build -o bin/user/options/p_id/post ./functions/user/options/p_id/post
 go build -o bin/user/post ./functions/user/post

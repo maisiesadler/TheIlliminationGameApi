@@ -11,6 +11,8 @@ go vet ./functions/setup/p_id/post
 go vet ./functions/setup/put
 go vet ./functions/user/get
 go vet ./functions/user/options/get
+go vet ./functions/user/options/p_id/delete
+go vet ./functions/user/options/p_id/post
 go vet ./functions/user/post
 
 go test ./functions/game/finished/get
@@ -26,4 +28,6 @@ go test ./functions/setup/p_id/post
 go test ./functions/setup/put
 go test ./functions/user/get
 go test ./functions/user/options/get
+go test ./functions/user/options/p_id/delete
+go test ./functions/user/options/p_id/post
 go test ./functions/user/post
