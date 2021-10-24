@@ -10,7 +10,7 @@ env:
 phases:
   install:
     runtime-versions:
-      golang: 1.12
+      golang: 1.13
     commands:
       # AWS Codebuild Go images use /go for the $GOPATH so copy the
       # application source code into that directory structure.
